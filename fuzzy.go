@@ -605,7 +605,7 @@ func (model *Model) updateSuffixArr() {
 	model.RLock()
 	termArr := make([]string, 0, 1000)
 	for term, count := range model.Data {
-		if count.Corpus > model.Threshold || count.Query > 0 { // TODO: query threshold?
+		if count.Corpus >= model.Threshold || count.Query > 0 { // TODO: query threshold?
 			termArr = append(termArr, term)
 		}
 	}
@@ -635,7 +635,7 @@ func (model *Model) Autocomplete(input string) ([]string, error) {
 	for _, m := range matches {
 		str := strings.Trim(model.SuffixArrConcat[m[0]:m[1]], "\x00")
 		if count, ok := model.Data[str]; ok {
-			if count.Corpus > model.Threshold || count.Query > 0 {
+			if count.Corpus >= model.Threshold || count.Query > 0 {
 				a.Results = append(a.Results, str)
 			}
 		}
